@@ -34,6 +34,7 @@ import arquitetura.representation.Variability;
 import arquitetura.representation.Variant;
 import arquitetura.representation.VariationPoint;
 import arquitetura.representation.relationship.AssociationRelationship;
+import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.GeneralizationRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
@@ -286,6 +287,9 @@ public class PLAFeatureMutation extends Mutation {
 					if (implementor instanceof Class) {
 					    arch.addImplementedInterface(targetInterface, (Class) implementor);
 					}
+					if (implementor == null){
+						targetInterface.copyAllDependenciesSuppliers(sourceInterface, targetInterface);
+					}
 				    }
 				    OpsInterface.clear();
 				}
@@ -476,6 +480,9 @@ public class PLAFeatureMutation extends Mutation {
 				}
 				if (implementor instanceof Class) {
 				    arch.addImplementedInterface(newInterface, (Class) implementor);
+				}
+				if (implementor == null){
+					newInterface.copyAllDependenciesSuppliers(sourceInterface, newInterface);
 				}
 			    }
 			    for (Concern con : op.getOwnConcerns()) {
@@ -686,6 +693,22 @@ public class PLAFeatureMutation extends Mutation {
 	final Class targetClass = findOrCreateClassWithConcern(targetComp, concern);
 	classComp.moveAttributeToClass(attribute, targetClass);
 	createAssociation(architecture, targetClass, classComp);
+   
+	//modificado Thais
+    if ((classComp.getAllMethods().size()) + (classComp.getAllAttributes().size()) == 0){
+        for (DependencyRelationship r: classComp.getDependencies()){
+            if (r.getSupplier().containsConcern(concern)){
+                targetClass.copyDependencyRelationship(classComp,targetClass,concern); 
+            }
+        }
+        for (RealizationRelationship implementor: classComp.getImplementors()){
+            if (implementor.getSupplier().containsConcern(concern)){
+                targetClass.copyRealizationRelationship(classComp, targetClass,concern);
+            }
+        }
+    }
+
+
     }
 
     private void moveMethodToComponent(Method method, Class classComp, Package targetComp, Package sourceComp,
@@ -693,7 +716,23 @@ public class PLAFeatureMutation extends Mutation {
 	final Class targetClass = findOrCreateClassWithConcern(targetComp, concern);
 	classComp.moveMethodToClass(method, targetClass);
 	createAssociation(architecture, targetClass, classComp);
+    
+	//Modificado Thais
+	if ((classComp.getAllMethods().size()) + (classComp.getAllAttributes().size()) == 0){
+        for (DependencyRelationship r: classComp.getDependencies()){
+            if (r.getSupplier().containsConcern(concern)){
+                targetClass.copyDependencyRelationship(classComp,targetClass,concern); 
+            }
+        }
+        for (RealizationRelationship implementor: classComp.getImplementors()){
+            if (implementor.getSupplier().containsConcern(concern)){
+                targetClass.copyRealizationRelationship(classComp, targetClass,concern);
+            }
+        }
     }
+}
+
+    
 
     // add por ��dipo
     private Class findOrCreateClassWithConcern(Package targetComp, Concern concern) throws ConcernNotFoundException {
@@ -790,7 +829,23 @@ public class PLAFeatureMutation extends Mutation {
 	}
 
 	addRelationship(sourceInterface, targetComp, sourceComp, architecture, concern, targetInterface);
-    }
+    
+    
+    //Modificado Thais
+    if ((sourceInterface.getOperations().size()) == 0){
+       for (DependencyRelationship r: sourceInterface.getDependencies()){
+           if (r.getSupplier().containsConcern(concern)){
+               targetInterface.copyDependencyRelationship(sourceInterface,targetInterface,concern); 
+           }
+       }
+       for (RealizationRelationship i: sourceInterface.getRealizationImplementors()){
+           if (i.getSupplier().containsConcern(concern)){
+               targetInterface.copyRealizationRelationship(sourceInterface, targetInterface,concern);
+           }
+       }
+   }
+}
+
 
     private void addRelationship(Interface sourceInterface, Package targetComp, Package sourceComp,
 	    Architecture architecture, Concern concern, Interface targetInterface) {

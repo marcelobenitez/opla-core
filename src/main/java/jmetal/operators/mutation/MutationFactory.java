@@ -42,7 +42,7 @@ public class MutationFactory {
      * @return the operator
      * @throws JMException
      */
-    public static Mutation getMutationOperator(String name, HashMap<String, Object> parameters, ExperimentCommomConfigs configs) throws JMException {
+	public static Mutation getMutationOperator(String name, HashMap<String, Object> parameters, ExperimentCommomConfigs configs) throws JMException {
 	if (isOnlyDesignPattern(configs)) {
 	    return new DesignPatternMutationOperator(parameters, configs.getDesignPatternStrategy(), new CustomDesignPatternSelection(configs.getPatterns()));
 	}else if(isDesignPatternAndPlaFeatureMutation(configs)){

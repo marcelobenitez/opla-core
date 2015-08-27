@@ -629,6 +629,70 @@ public class SolutionSet implements Serializable {
 		    bw.write("Sum DepOut: " + metrics.evaluateSumDepOut(arch));
 		    bw.newLine();
 		    bw.newLine();
+		    
+		    bw.write("------  ACOMP METRICS -----------");
+			bw.newLine();
+			bw.newLine();
+			bw.write("Sum DepIn: "
+					+ metrics.evaluateSumDepIn(arch));
+			bw.newLine();
+			bw.write("Sum DepOut: " + metrics.evaluateSumDepOut(arch));
+			bw.newLine();
+			bw.newLine();
+			
+			
+			bw.write("------  ACLASS METRICS -----------");
+			bw.newLine();
+			bw.newLine();
+			bw.write("Sum DepIn: "
+					+ metrics.evaluateSumDepIn(arch));
+			bw.newLine();
+			bw.write("Sum DepOut: " + metrics.evaluateSumDepOut(arch));
+			bw.newLine();
+			bw.newLine();
+			
+			
+			bw.write("------  TAM METRICS -----------");
+			bw.newLine();
+			bw.newLine();
+			bw.write("Mean Num OPs: " + metrics.evaluateMeanNumOps(arch));
+			bw.newLine();
+			bw.newLine();
+			
+			
+			bw.write("------  COE METRICS -----------");
+			bw.newLine();
+			bw.newLine();
+			bw.write("Relational Cohesion: " + metrics.evaluateCohesion(arch));
+			bw.newLine();
+			bw.write("Lcc: " + metrics.evaluateLCC(arch));
+			bw.newLine();
+			bw.newLine();
+			
+
+			bw.write("------  DC METRICS -----------");
+			bw.newLine();
+			bw.newLine();
+			bw.write("CDAC: " + metrics.evaluateCDAC(arch));
+			bw.newLine();
+			bw.write("CDAI: " + metrics.evaluateCDAI(arch));
+			bw.newLine();
+			bw.write("CDAO: " + metrics.evaluateCDAO(arch));
+			bw.newLine();
+			
+			bw.newLine();
+			
+			bw.write("------  EC METRICS -----------");
+			bw.newLine();
+			bw.newLine();
+			bw.write("CIBC: " + metrics.evaluateCIBC(arch));
+			bw.newLine();
+			bw.write("IIBC: " + metrics.evaluateIIBC(arch));
+			bw.newLine();
+			bw.write("OOBC: " + metrics.evaluateOOBC(arch));
+			bw.newLine();
+			
+			bw.newLine();
 		}
 	    }
 
